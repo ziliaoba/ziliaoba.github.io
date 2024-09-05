@@ -211,6 +211,43 @@
       50% { transform: translateY(-10px); }
     }
 
+    /* 居中样式 */
+    #loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: paleturquoise;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.8);
+      font-size: 24px;
+      font-weight: bold;
+      z-index: 9999;
+    }
+
+    /* 动画效果 */
+    @keyframes loading-animation {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.2);
+        opacity: 0.8;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    #loading p {
+      animation: loading-animation 1.5s infinite ease-in-out;
+    }
+
     .pagination-container {
       display: flex;
       justify-content: space-between;
@@ -297,6 +334,7 @@
       <p><strong>下载量</strong></p>
       <p><strong>所需积分</strong></p>
     </div>
+    <div id="loading">陛下稍安勿躁，一大波VIP付费资料即将为您呈上...</div>
     <div id="data-list"></div>
     <div id="pagination"></div>
   </div>
@@ -320,17 +358,34 @@
   </footer>
 
 
-  <!-- jQuery and Bootstrap JS -->
+  <!-- jQuery and Bootstrap js-->
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/antd/4.15.0/antd.min.js"></script>
   <!-- PapaParse JS for CSV parsing -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
   <script>
-  $(document).ready(function() {
+
+  async function loadData() {
+      return new Promise((resolve) => {
+        Papa.parse("data.csv", {
+          download: true,
+          skipEmptyLines: true,
+          complete: function(results) {
+            data = results.data;
+            resolve();  // 数据加载完成后，resolve 该 Promise
+          }
+        });
+      });
+  }
+
+  $(document).ready(async function() {
     var data = [];
     var pageSize = 50;
     var currentPage = 1;
+
+    await loadData();  
+    $('#loading').hide(); 
 
     function renderList(filteredData, page) {
       var start = (page - 1) * pageSize;
