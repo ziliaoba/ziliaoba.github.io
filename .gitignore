@@ -1,0 +1,5 @@
+.idea/
+*.sh
+index_v*.html
+lanzouyun.txt
+populate_*
