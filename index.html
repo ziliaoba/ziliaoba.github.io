@@ -375,7 +375,7 @@
   <script>
   async function loadData() {
       return new Promise((resolve) => {
-        Papa.parse("https://gcore.jsdelivr.net/gh/btcltceth/blogassets@latest/a/img/data.csv", {
+        Papa.parse("data.csv", {
           download: true,
           skipEmptyLines: true,
           complete: function(results) {
@@ -474,7 +474,7 @@
     }
 
     // Load CSV file
-    Papa.parse("https://gcore.jsdelivr.net/gh/btcltceth/blogassets@latest/a/img/data.csv", {
+    Papa.parse("data.csv", {
       download: true,
       skipEmptyLines: true,
       complete: function(results) {
