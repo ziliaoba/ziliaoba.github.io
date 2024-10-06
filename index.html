@@ -60,6 +60,7 @@
       padding: 10px 20px;
       background-color: #f8f9fa;
       border-bottom: 1px solid #ddd;
+      flex-wrap: nowrap; /* 防止内容换行 */
     }
 
     .navbar-brand {
@@ -103,6 +104,7 @@
       position: relative;
       display: flex;
       align-items: center;
+      margin-right: 20px; /* 增加右边距 */
     }
 
     .search-input {
@@ -313,16 +315,23 @@
 <body>
   <!-- Navigation Bar -->
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <span classsrc="logo.webp" alt="Website Logo" style="height: 40px; margin-right: 10px;" loading="lazy">
+    <img src="logo.webp" alt="Website Logo" style="height: 40px; margin-right: 10px;" loading='lazy'> </img>
     <a class="navbar-brand" href="#">VIP付费资源下载中心(永久限免)</a>
-    <div class="search-container ml-auto"> <!-- 添加 ml-auto 将搜索栏移动到右边 -->
-      <input type="text" class="search-input" placeholder="搜索资源..." id="search-input">
-      <i class="fas fa-search search-icon"></i>
+    <!-- Right section with search and social links -->
+    <div class="ml-auto d-flex">  <!-- 添加了一个容器，将搜索框和社交链接放在一起 -->
+      <div class="search-container">
+        <input type="text" class="search-input" placeholder="搜索资源..." id="search-input">
+        <i class="fas fa-search search-icon"></i>
+      </div>
+      <div class="social-links">
+        <a href="https://twitter.com/stevechen" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+        <a href="https://github.com/HardhatChad" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
+      </div>
     </div>
-    <div class="social-links">
+<!--     <div class="social-links">
       <a href="https://twitter.com/stevechen" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
       <a href="https://github.com/HardhatChad" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
-    </div>
+    </div> -->
   </nav>
 
   <div class="list-container">
