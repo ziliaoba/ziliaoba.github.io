@@ -375,7 +375,7 @@
   <script>
   async function loadData() {
       return new Promise((resolve) => {
-        Papa.parse("data.csv", {
+        Papa.parse("https://ziliaoba.oss-cn-beijing.aliyuncs.com/data.csv", {
           download: true,
           skipEmptyLines: true,
           complete: function(results) {
@@ -474,7 +474,7 @@
     }
 
     // Load CSV file
-    Papa.parse("data.csv", {
+    Papa.parse("https://ziliaoba.oss-cn-beijing.aliyuncs.com/data.csv", {
       download: true,
       skipEmptyLines: true,
       complete: function(results) {
