@@ -315,7 +315,7 @@
 <body>
   <!-- Navigation Bar -->
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <img src="logo.webp" alt="Website Logo" style="height: 40px; margin-right: 10px;" loading='lazy'> </img>
+    <img src="https://gcore.jsdelivr.net/gh/btcltceth/blogassets@latest/a/img/logo.webp" alt="Website Logo" style="height: 40px; margin-right: 10px;" loading='lazy'> </img>
     <a class="navbar-brand" href="#">VIP付费资源下载中心(永久限免)</a>
     <!-- Right section with search and social links -->
     <div class="ml-auto d-flex">  <!-- 添加了一个容器，将搜索框和社交链接放在一起 -->
@@ -375,7 +375,7 @@
   <script>
   async function loadData() {
       return new Promise((resolve) => {
-        Papa.parse("data.csv", {
+        Papa.parse("https://gcore.jsdelivr.net/gh/btcltceth/blogassets@latest/a/img/data.csv", {
           download: true,
           skipEmptyLines: true,
           complete: function(results) {
@@ -474,7 +474,7 @@
     }
 
     // Load CSV file
-    Papa.parse("data.csv", {
+    Papa.parse("https://gcore.jsdelivr.net/gh/btcltceth/blogassets@latest/a/img/data.csv", {
       download: true,
       skipEmptyLines: true,
       complete: function(results) {
