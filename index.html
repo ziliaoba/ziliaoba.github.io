@@ -100,6 +100,12 @@
       }
     }
 
+    .category-filter {
+      cursor: pointer;
+      color: #007bff;
+      text-decoration: underline;
+    }
+
     .search-container {
       position: relative;
       display: flex;
@@ -113,6 +119,27 @@
       border: 1px solid #ccc;
       margin-right: 10px;
     }
+
+    .search-input-container {
+      position: relative;
+    }
+
+    @keyframes blink {
+      0% { opacity: 0; }
+      50% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    .search-prompt {
+      position: absolute;
+      top: 50%;
+      left: 10px;
+      transform: translateY(-50%);
+      color: #999;
+      pointer-events: none;
+      animation: blink 1s infinite;
+    }
+
 
     .search-icon {
       position: absolute;
@@ -192,6 +219,20 @@
       flex-basis: 40%; 
       flex-grow: 2;
       padding-left: 15px; /* 与 .navbar-brand 对齐 */
+    }
+
+     /* 新增样式 */
+    .cancel-filter {
+      margin-left: 27px;
+      background-color: #096dd9;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+      display: none;
+    }
+
+    .cancel-filter:hover {
+      background-color: #e2e6ea;
     }
 
     .glowing-text {
@@ -320,7 +361,8 @@
     <!-- Right section with search and social links -->
     <div class="ml-auto d-flex">  <!-- 添加了一个容器，将搜索框和社交链接放在一起 -->
       <div class="search-container">
-        <input type="text" class="search-input" placeholder="搜索资源..." id="search-input">
+        <input type="text" class="search-input" id="search-input">
+        <span class="search-prompt">点击这里进行快速搜索</span>
         <i class="fas fa-search search-icon"></i>
       </div>
       <div class="social-links">
@@ -337,7 +379,8 @@
   <div class="list-container">
     <div class="list-header">
       <p><strong>资源名称</strong></p>
-      <p><strong>资源类别</strong></p>
+      <p><strong>资源类别</strong>
+      <button class="cancel-filter" id="cancel-filter">取消筛选</button></p>
       <p><strong>上传时间</strong></p>
       <p><strong>下载量</strong></p>
       <p><strong>所需积分</strong></p>
@@ -390,6 +433,7 @@
     var data = [];
     var pageSize = 100;
     var currentPage = 1;
+    var currentCategory = null;
 
     await loadData();  
     $('#loading').hide(); 
@@ -399,11 +443,18 @@
       var end = start + pageSize;
       var paginatedData = filteredData.slice(start, end);
 
+      // 显示或隐藏"取消筛选"按钮
+      if (currentCategory) {
+        $('#cancel-filter').show();
+      } else {
+        $('#cancel-filter').hide();
+      }
+
       var list = paginatedData.map(function(row) {
         return `
           <div class="list-item">
             <p>${row[0]}</p>
-            <p>${row[1]}</p>
+            <p class="category-filter">${row[1]}</p>
             <p>${row[2]}</p>
             <p>${row[3]}</p>
             <p class="glowing-text">${row[4]}</p>
@@ -413,7 +464,28 @@
 
       $('#data-list').html(list);
       renderPagination(filteredData.length, page);
+
+      $('.category-filter').off('click').on('click', function() {
+        var category = $(this).text();
+        filterByCategory(category);
+      });
     }
+
+    function filterByCategory(category) {
+      currentCategory = category;
+      var filteredData = data.filter(function(row) {
+        return row[1] === category;
+      });
+      currentPage = 1;
+      renderList(filteredData, currentPage);
+    }
+
+    function resetFilter() {
+      currentCategory = null;
+      currentPage = 1;
+      renderList(data, currentPage);
+    }
+
 
     function renderPagination(totalItems, page) {
       var totalPages = Math.ceil(totalItems / pageSize);
@@ -466,12 +538,20 @@
 
     function searchAndRender(query) {
       var filteredData = data.filter(function(row) {
+        if (currentCategory && row[1] !== currentCategory) {
+          return false;
+        }
         return row.some(function(cell) {
           return cell.toLowerCase().includes(query.toLowerCase());
         });
       });
       renderList(filteredData, currentPage);
     }
+
+    $('#cancel-filter').on('click', function() {
+        resetFilter();
+    });
+
 
     // Load CSV file
     Papa.parse("https://ziliaoba.oss-cn-beijing.aliyuncs.com/data.csv", {
@@ -482,6 +562,11 @@
         renderList(data, currentPage);
       }
     });
+
+    $('#search-input').on('focus', function() {
+      $('.search-prompt').hide();
+    });
+
 
     // Search functionality
     $('#search-input').on('input', function() {
